@@ -11,8 +11,9 @@ def run_tracking(video_path: str, model_hash: str, conf_threshold: float):
         stream=True,
     )
     
-    output = {}
+    outputs = []
     for result in results:
+        output = {}
         if result.boxes is not None:
             for track in result.boxes:
                 track_id = int(track.id.cpu().item()) if track.id is not None else -1
@@ -27,4 +28,5 @@ def run_tracking(video_path: str, model_hash: str, conf_threshold: float):
                     "cls": cls,
                     "conf": conf,
                 }
-    return output
+        outputs.append(output)
+    return outputs

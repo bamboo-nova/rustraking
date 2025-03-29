@@ -1,6 +1,6 @@
 use pyo3::prelude::*;
 use pyo3::exceptions::PyValueError;
-use pyo3::types::{PyDict, PyTuple, PyList};
+use pyo3::types::{PyTuple, PyList};
 use clap::Parser;
 use serde_json::{Value, to_writer_pretty};
 use std::fs::File;
@@ -16,7 +16,6 @@ type MyResult<T> = Result<T, Box<dyn Error>>;
 pub struct Config {
     source: String,
     model_hash: String,
-    batch_size: i32,
     conf_threshold: f32,
 }
 
@@ -26,7 +25,6 @@ pub fn get_args() -> MyResult<Config> {
     Ok(Config{
         source: matches.source,
         model_hash: matches.model,
-        batch_size: matches.batch,
         conf_threshold: matches.conf,
     })
 }
@@ -51,14 +49,13 @@ pub fn run(config: Config) -> PyResult<()> {
             &[
                 config.source.clone().into_py(py),
                 config.model_hash.clone().into_py(py),
-                config.batch_size.into_py(py),
                 config.conf_threshold.into_py(py),
             ],
         );
 
-        // 関数を呼び出し、結果をPyDictとして取得
+        // 関数を呼び出し、結果をPyListとして取得
         let result = run_tracking.call1(args)?;
-        let result_dict = result.downcast::<PyDict>()?;
+        let result_dict = result.downcast::<PyList>()?;
 
         // Pythonのjson.dumpsを使ってstrに変換
         let json_module = PyModule::import_bound(py, "json")?;
@@ -66,7 +63,6 @@ pub fn run(config: Config) -> PyResult<()> {
         let json_str: &str = json_str_obj.extract()?;
 
         // Rust側でserde_json::Valueとしてパース
-        // let result_json: Value = serde_json::from_str(json_str)?;
         let result_json: Value = serde_json::from_str(json_str)
             .map_err(|e| PyValueError::new_err(e.to_string()))?;
 

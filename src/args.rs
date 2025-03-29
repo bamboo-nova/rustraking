@@ -15,11 +15,7 @@ pub struct Args {
     #[arg(long = "cuda", default_value_t = false)]
     pub cuda: bool,
 
-    /// Batch size.
-    #[arg(long = "batch-size", default_value = "32")]
-    pub batch: i32,
-
     /// Confidence threshold.
-    #[arg(short='c', long="conf-threshold", default_value="0.3")]
+    #[arg(short='c', long="conf-threshold", default_value="0.7")]
     pub conf: f32,
 }
