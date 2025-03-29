@@ -1,0 +1,20 @@
+x-template: &template
+  build:
+    context: .
+  environment:
+    - PYTHONPATH=$PYTHONPATH
+  env_file:
+    - .env
+  image: $DOCKER_IMAGE
+  working_dir: $DOCKER_WORKDIR
+  volumes:
+    - .:${DOCKER_WORKDIR}
+  tty: true
+
+services:
+  rust-track-demo:
+    <<: *template
+    command: /bin/bash
+
+volumes:
+  python-packages:

@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "rust-tracking"
+version = "0.1.0"
+description = "rust tracking with python code."
+authors = ["bamboo-nova"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.12"
+ultralytics = "^8.3.89"
+cython = "^3.0.12"
+pyyaml = "^6.0.2"
+requests = "^2.32.3"
+opencv-python = "^4.11.0.86"
+pandas = "^2.2.3"
+scikit-learn = "^1.6.1"
+pillow = "^11.1.0"
+joblib = "^1.4.2"
+pycocotools = "^2.0.8"
+
+[tool.poetry.group.ml.dependencies]
+torch = [
+    { version = "=2.2.0", source = "pypi", platform = "darwin" },
+    { version = "=2.2.0+cpu", source = "pytorch", platform = "linux" },
+    { version = "=2.2.0+cpu", source = "pytorch", platform = "win32" },
+]
+
+[[tool.poetry.source]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cpu"
+priority = "explicit"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
