@@ -11,10 +11,6 @@ pub struct Args {
     #[arg(value_name = "SOURCE", help = "Input data.", required = true)]
     pub source: String,
 
-    /// using CUDA
-    #[arg(long = "cuda", default_value_t = false)]
-    pub cuda: bool,
-
     /// Confidence threshold.
     #[arg(short='c', long="conf-threshold", default_value="0.7")]
     pub conf: f32,
